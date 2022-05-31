@@ -1,0 +1,15 @@
+version: "3.4"
+services:
+  near.dnp.dappnode.eth:
+    build:
+      context: neard_image
+      args:
+        UPSTREAM_VERSION: 1.24.0
+    environment:
+      - CHAIN_ID=testnet
+    volumes:
+      - "near:/srv/near"
+    restart: unless-stopped
+    image: "near.dnp.dappnode.eth:0.1.0"
+volumes:
+  near: {}
