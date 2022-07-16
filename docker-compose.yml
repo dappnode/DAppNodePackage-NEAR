@@ -5,7 +5,7 @@ services:
     build:
       context: neard_image
       args:
-        UPSTREAM_VERSION: 1.24.0
+        UPSTREAM_VERSION: 1.27.0
     environment:
       - CHAIN_ID=testnet
     volumes:
