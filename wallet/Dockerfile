@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile-upstream:experimental
+
+FROM phusion/baseimage:0.11 as build
+ARG CHAIN_ID
+
+RUN curl -o /tmp/node_setup.sh "https://deb.nodesource.com/setup_12.x"
+RUN bash /tmp/node_setup.sh
+RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update -qq && apt-get install -y \
+    nodejs \
+    git
+RUN npm install -g yarn
+
+# near-wallet
+WORKDIR /near-wallet
+RUN git clone --branch master https://github.com/near/near-wallet.git .
+RUN yarn install
+RUN NEAR_WALLET_ENV=${CHAIN_ID} yarn run build
+
+# ======================== EXECUTE ==================================
+FROM nginx:1.22.0-alpine
+COPY --from=build /near-wallet/packages/frontend/dist /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

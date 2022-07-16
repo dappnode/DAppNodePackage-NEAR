@@ -1,9 +1,10 @@
 {
   "name": "near.dnp.dappnode.eth",
   "version": "0.1.0",
-  "description": "near.public.dappnode.eth description",
+  "description": "near.dnp.dappnode.eth description",
   "type": "service",
   "author": "edu",
+  "mainService": "near",
   "categories": [
     "Developer tools"
   ],
