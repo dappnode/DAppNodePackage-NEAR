@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   near:
-    image: "near.near.dnp.dappnode.eth:0.1.0"
+    image: "near.near.dnp.dappnode.eth:0.1.1"
     build:
       context: neard_image
       args:
@@ -12,11 +12,13 @@ services:
       - "near:/srv/near"
     restart: unless-stopped
   wallet:
-    image: "wallet.near.dnp.dappnode.eth:0.1.0"
+    image: "wallet.near.dnp.dappnode.eth:0.1.1"
     build:
       context: wallet
       args:
         CHAIN_ID: testnet
+        NODE_URL: "http://near.dappnode:3030"
+        WALLET_URL: "http://wallet.near.dappnode"
     restart: unless-stopped
 volumes:
   near: {}

@@ -2,6 +2,8 @@
 
 FROM phusion/baseimage:0.11 as build
 ARG CHAIN_ID
+ARG NODE_URL
+ARG WALLET_URL
 
 RUN curl -o /tmp/node_setup.sh "https://deb.nodesource.com/setup_12.x"
 RUN bash /tmp/node_setup.sh
@@ -16,7 +18,7 @@ RUN npm install -g yarn
 WORKDIR /near-wallet
 RUN git clone --branch master https://github.com/near/near-wallet.git .
 RUN yarn install
-RUN NEAR_WALLET_ENV=${CHAIN_ID} yarn run build
+RUN NEAR_WALLET_ENV=${CHAIN_ID} NODE_URL=${NODE_URL} WALLET_URL=${WALLET_URL} yarn run build
 
 # ======================== EXECUTE ==================================
 FROM nginx:1.22.0-alpine
