@@ -1,24 +1,31 @@
 version: "3.4"
 services:
   near:
-    image: "near.near.dnp.dappnode.eth:0.1.1"
+    image: "near.near.dnp.dappnode.eth:0.1.3"
     build:
       context: neard_image
       args:
         UPSTREAM_VERSION: 1.27.0
     environment:
-      - CHAIN_ID=testnet
+      CHAIN_ID: testnet
+      ACCOUNT_ID: ""
+      NODE_PUBLIC_KEY: ""
+      NODE_SECRET_KEY: ""
+      VALIDATOR_PUBLIC_KEY: ""
+      VALIDATOR_SECRET_KEY: ""
     volumes:
       - "near:/srv/near"
     restart: unless-stopped
+    ports:
+      - "24567:24567/tcp"
+      - "24567:24567/udp"
   wallet:
-    image: "wallet.near.dnp.dappnode.eth:0.1.1"
+    image: "wallet.near.dnp.dappnode.eth:0.1.3"
     build:
       context: wallet
       args:
         CHAIN_ID: testnet
         NODE_URL: "http://near.dappnode:3030"
-        WALLET_URL: "http://wallet.near.dappnode"
     restart: unless-stopped
 volumes:
   near: {}
