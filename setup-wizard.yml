@@ -1,0 +1,47 @@
+version: "2"
+fields:
+  - id: accountId
+    target:
+      type: environment
+      name: ACCOUNT_ID
+      service: near
+    title: Account ID
+    description: >-
+      The Account ID will be added to node_key.json and validator_key.json
+    required: false
+  - id: nodePublicKey
+    target:
+      type: environment
+      name: NODE_PUBLIC_KEY
+      service: near
+    title: Node Public Key
+    description: >-
+      The Node Public Key will be added to node_key.json
+    required: false
+  - id: nodeSecretKey
+    target:
+      type: environment
+      name: NODE_SECRET_KEY
+      service: near
+    title: Node Secret Key
+    description: >-
+      The Node Secret Key will be added to node_key.json
+    required: false
+  - id: validatorPublicKey
+    target:
+      type: environment
+      name: VALIDATOR_PUBLIC_KEY
+      service: near
+    title: Validator Public Key
+    description: >-
+      The Validator Public Key will be added to validator_key.json
+    required: false
+  - id: validatorSecretKey
+    target:
+      type: environment
+      name: VALIDATOR_SECRET_KEY
+      service: near
+    title: Validator Secret Key
+    description: >-
+      The Validator Secret Key will be added to validator_key.json
+    required: false
