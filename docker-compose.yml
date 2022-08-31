@@ -5,7 +5,7 @@ services:
     build:
       context: neard_image
       args:
-        UPSTREAM_VERSION: 1.27.0
+        UPSTREAM_VERSION: 1.28.0
     environment:
       CHAIN_ID: testnet
       ACCOUNT_ID: ""
@@ -26,6 +26,16 @@ services:
       args:
         CHAIN_ID: testnet
         NODE_URL: "http://near.dappnode:3030"
+    restart: unless-stopped
+  stake:
+    image: "stake.near.dnp.dappnode.eth:0.1.3"
+    build:
+      context: stake
+      args:
+        CHAIN_ID: testnet
+        NODE_URL: "http://near.dappnode:3030"
+        WALLET_URL: "http://wallet.near.dappnode"
+        CONTRACT_NAME: factory01.littlefarm.testnet
     restart: unless-stopped
 volumes:
   near: {}

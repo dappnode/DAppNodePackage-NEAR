@@ -24,6 +24,8 @@ RUN NEAR_WALLET_ENV=${CHAIN_ID} REACT_APP_NODE_URL=${NODE_URL} yarn run build
 # ======================== EXECUTE ==================================
 FROM nginx:1.22.0-alpine
 COPY --from=build /near-wallet/packages/frontend/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
+# CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
 CMD ["nginx", "-g", "daemon off;"]
