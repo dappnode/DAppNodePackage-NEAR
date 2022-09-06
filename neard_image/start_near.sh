@@ -18,14 +18,6 @@ if [ ! -f ${NEAR_HOME}/data/CURRENT ]; then
     rm ${NEAR_HOME}/data.tar
 fi
 
-if [ -n "$ACCOUNT_ID" ] && [ -n "$NODE_PUBLIC_KEY" ] && [ -n "$NODE_SECRET_KEY" ]
-then
-    echo "Configure custom node_key.json"
-    cat << EOF > "$NEAR_HOME/node_key.json"
-{"account_id": "$ACCOUNT_ID", "public_key": "$NODE_PUBLIC_KEY", "secret_key": "$NODE_SECRET_KEY"}
-EOF
-fi
-
 if [ -n "$ACCOUNT_ID" ] && [ -n "$VALIDATOR_PUBLIC_KEY" ] && [ -n "$VALIDATOR_SECRET_KEY" ]
 then
     echo "Configure custom validator_key.json"

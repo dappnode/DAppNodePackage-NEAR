@@ -2,6 +2,7 @@ import "./App.css";
 import React from 'react';
 import * as nearAPI from 'near-api-js';
 import BN from 'bn.js';
+import BigNumber from 'bignumber.js';
 import {PublicKey} from "near-api-js/lib/utils";
 
 const YourStakingPoolIdKey = "your_staking_pool_id";
@@ -14,6 +15,7 @@ const ValidFactoryIdRe = /^([a-z\d]+[-_])*[a-z\d]+$/
 const GAS = new BN("200000000000000")
 
 const fromYocto = (a) => Math.floor(a / OneNear * 1000) / 1000;
+const toYocto = (a) => Math.floor(a * OneNear);
 
 class App extends React.Component {
   constructor(props) {
@@ -34,6 +36,7 @@ class App extends React.Component {
         numerator: 10,
         denominator: 100,
       },
+      attachedBalance: 0,
 
       yourStakingPoolAccountId: null,
       poolSuccess: false,
@@ -47,8 +50,13 @@ class App extends React.Component {
         ownerId: this._accountId,
       })
     })
-
     this._minAttachedBalance = "30000000000000000000000000";
+  }
+
+  async requestEnvironmentValue(key) {
+    const response = await fetch(`http://near.dappnode:8080/api/environment/${key}`)
+    const data = await response.json();
+    return data.value;
   }
 
   async _initYourStakingPool() {
@@ -75,6 +83,10 @@ class App extends React.Component {
   }
 
   async _initNear() {
+
+    this.state.stakingPoolId = await this.requestEnvironmentValue('ACCOUNT_ID');
+    this.state.stakePublicKey = await this.requestEnvironmentValue('VALIDATOR_PUBLIC_KEY');
+
     const nearConfig = {
       networkId: process.env.REACT_APP_CHAIN_ID,
       nodeUrl: process.env.REACT_APP_NODE_URL,
@@ -96,7 +108,7 @@ class App extends React.Component {
       changeMethods: ['create_staking_pool'],
     });
     this._minAttachedBalance = await this._contract.get_min_attached_balance();
-    console.log(this._minAttachedBalance)
+    this.state.attachedBalance = fromYocto(this._minAttachedBalance);
     await this._initYourStakingPool();
 
   }
@@ -187,6 +199,18 @@ class App extends React.Component {
     }
   }
 
+  attachedBalanceValid() {
+    return this.state.attachedBalance >= fromYocto(this._minAttachedBalance);
+  }
+
+  attachedBalanceClass() {
+    if (this.attachedBalanceValid()) {
+      return "form-control form-control-large is-valid";
+    } else {
+      return "form-control form-control-large is-invalid";
+    }
+  }
+
   stakingPublicKeyValid() {
     try {
       let key = PublicKey.fromString(this.state.stakePublicKey);
@@ -234,7 +258,7 @@ class App extends React.Component {
       stake_public_key: this.state.stakePublicKey,
       reward_fee_fraction: this.state.rewardFeeFraction,
       code_hash: process.env.REACT_APP_CONTRACT_HASH,
-    }, GAS, this._minAttachedBalance)
+    }, GAS, BigNumber(toYocto(this.state.attachedBalance)).toFixed())
   }
 
   render() {
@@ -258,7 +282,8 @@ class App extends React.Component {
                      className={this.stakingPoolIdClass()}
                      id="stakingPoolId"
                      placeholder="well-done-pool"
-                     disabled={this.state.creating}
+                    //  disabled={this.state.creating}
+                     disabled={true}
                      value={this.state.stakingPoolId}
                      onChange={(e) => this.handleChange('stakingPoolId', e.target.value)}
               />
@@ -284,7 +309,8 @@ class App extends React.Component {
                      className={this.ownerIdClass()}
                      id="ownerId"
                      placeholder={this.state.accountId}
-                     disabled={this.state.creating}
+                    //  disabled={this.state.creating}
+                     disabled={true}
                      value={this.state.ownerId}
                      onChange={(e) => this.handleChange('ownerId', e.target.value)}
               />
@@ -302,7 +328,8 @@ class App extends React.Component {
                      className={this.stakingPublicKeyClass()}
                      id="stakePublicKey"
                      placeholder="A74xPSNpgQhqHtoidA3Q7oKTXZ9G12cRRt3DjeWsF7vf"
-                     disabled={this.state.creating}
+                    //  disabled={this.state.creating}
+                     disabled={true}
                      value={this.state.stakePublicKey}
                      onChange={(e) => this.handleChange('stakePublicKey', e.target.value)}
               />
@@ -340,6 +367,21 @@ class App extends React.Component {
             </small>
           </div>
 
+          <div className="form-group">
+            <label forhtml="attachedBalance">Initial Attached Balance (Staking amount)</label>
+            <div className="input-group">
+              <input type="text"
+                     className={this.attachedBalanceClass()}
+                     id="attachedBalance"
+                     placeholder={10}
+                     disabled={this.state.creating}
+                     value={this.state.attachedBalance}
+                     onChange={(e) => this.handleChange('attachedBalance', e.target.value)}
+              />
+            </div>
+            <small>The minimum amount is <strong>{fromYocto(this._minAttachedBalance) + " Ⓝ"}</strong>
+            </small>
+          </div>
 
           <div className="form-group">
             <div>
@@ -353,7 +395,7 @@ class App extends React.Component {
                     !this.stakingPublicKeyValid() ||
                     !this.rewardFeeFractionValid()
                   }
-                  onClick={() => this.createStakingPool()}>Create Staking Pool {this.isValidStakingPoolId(this.state.stakingPoolId) && `@${this.state.stakingPoolId}.${ContractName}`} ({fromYocto(this._minAttachedBalance)} Ⓝ)</button>
+                  onClick={() => this.createStakingPool()}>Create Staking Pool {this.isValidStakingPoolId(this.state.stakingPoolId) && `@${this.state.stakingPoolId}.${ContractName}`} ({this.state.attachedBalance} Ⓝ)</button>
             </div>
           </div>
         </div>
@@ -361,14 +403,14 @@ class App extends React.Component {
         <div>
           <button
               className="btn btn-primary"
-              onClick={() => this.requestSignIn()}>Log in with NEAR Wallet to create a new staking pool</button>
+              onClick={() => this.requestSignIn()}>Log in with NEAR Wallet</button>
         </div>
     ));
     return (
         <div className="px-5">
-          <h1>Staking Pool Factory (testnet)</h1>
+          <h1>Near staking-ui ({process.env.REACT_APP_CHAIN_ID})</h1>
           <p>
-            Create and deploy a new staking pool. It'll cost you <span className="font-weight-bold">{fromYocto(this._minAttachedBalance)} Ⓝ</span> to cover storage fees on the new staking pool.
+            Create and deploy a new staking pool. It'll cost you at least <span className="font-weight-bold">{fromYocto(this._minAttachedBalance)} Ⓝ</span> to cover storage fees on the new staking pool.
           </p>
           <p>
             Staking Pool allows users to delegate tokens in a secure way. Once the staking pool is created, the owner of the staking pool

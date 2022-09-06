@@ -1,7 +1,8 @@
 This package contains a Near Node and a local wallet.
 
 **Wallet URL**: [wallet.near.dappnode](http://wallet.near.dappnode)
-**Stake URL**: [wallet.near.dappnode](http://stake.near.dappnode)
+
+**Stake URL**: [near.dappnode](http://near.dappnode)
 
 The backup contains de following files:
 - config.json
