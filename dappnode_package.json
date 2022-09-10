@@ -39,11 +39,6 @@
       "service": "near"
     },
     {
-      "name": "node_key",
-      "path": "/srv/near/node_key.json",
-      "service": "near"
-    },
-    {
       "name": "validator_key",
       "path": "/srv/near/validator_key.json",
       "service": "near"
