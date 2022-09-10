@@ -6,15 +6,15 @@ services:
       context: neard_image
       args:
         UPSTREAM_VERSION: 1.29.0
-        CHAIN_ID: testnet
-        NODE_URL: "http://near.dappnode:3030"
-        WALLET_URL: "http://wallet.near.dappnode"
-        CONTRACT_NAME: factory01.littlefarm.testnet
-        CONTRACT_HASH: HxT6MrNC7cQh68CZeBxiBbePSD7rxDeqeQDeHQ8n5j2M
     environment:
+      CHAIN_ID: testnet
       ACCOUNT_ID: ""
       VALIDATOR_PUBLIC_KEY: ""
       VALIDATOR_SECRET_KEY: ""
+      NODE_URL: "http://near.dappnode:3030"
+      WALLET_URL: "http://wallet.near.dappnode"
+      CONTRACT_NAME: factory01.littlefarm.testnet
+      CONTRACT_HASH: HxT6MrNC7cQh68CZeBxiBbePSD7rxDeqeQDeHQ8n5j2M
     volumes:
       - "near:/srv/near"
     restart: unless-stopped

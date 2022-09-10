@@ -7,19 +7,34 @@ import {PublicKey} from "near-api-js/lib/utils";
 
 const YourStakingPoolIdKey = "your_staking_pool_id";
 const OneNear = new BN("1000000000000000000000000");
-const ContractName = process.env.REACT_APP_CONTRACT_NAME;
 const MinAccountIdLen = 2;
 const MaxAccountIdLen = 64;
 const ValidAccountRe = /^(([a-z\d]+[-_])*[a-z\d]+\.)*([a-z\d]+[-_])*[a-z\d]+$/;
-const ValidFactoryIdRe = /^([a-z\d]+[-_])*[a-z\d]+$/
+const ValidFactoryIdRe = /^([a-z\d]+[-_.])*[a-z\d]+$/
 const GAS = new BN("200000000000000")
 
 const fromYocto = (a) => Math.floor(a / OneNear * 1000) / 1000;
 const toYocto = (a) => Math.floor(a * OneNear);
 
+async function requestEnvironmentValue(key) {
+  const response = await fetch(`http://near.dappnode:8080/api/environment/${key}`)
+  const data = await response.json();
+  return data.value;
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.config = {
+      contractName: "",
+      stakingPoolId: "",
+      stakePublicKey: "",
+      networkId: "",
+      nodeUrl: "",
+      walletUrl: "",
+      contractHash: "",
+    };
 
     this.state = {
       connected: false,
@@ -53,19 +68,13 @@ class App extends React.Component {
     this._minAttachedBalance = "30000000000000000000000000";
   }
 
-  async requestEnvironmentValue(key) {
-    const response = await fetch(`http://near.dappnode:8080/api/environment/${key}`)
-    const data = await response.json();
-    return data.value;
-  }
-
   async _initYourStakingPool() {
     const stakingPoolId = window.localStorage.getItem(YourStakingPoolIdKey);
     if (!stakingPoolId) {
       return;
     }
 
-    const yourStakingPoolAccountId = `${stakingPoolId}.${ContractName}`;
+    const yourStakingPoolAccountId = `${stakingPoolId}`;
     try {
       await this._near.connection.provider.query(`account/${yourStakingPoolAccountId}`, '');
       this.setState({
@@ -84,14 +93,23 @@ class App extends React.Component {
 
   async _initNear() {
 
-    this.state.stakingPoolId = await this.requestEnvironmentValue('ACCOUNT_ID');
-    this.state.stakePublicKey = await this.requestEnvironmentValue('VALIDATOR_PUBLIC_KEY');
+    this.config.contractName = await requestEnvironmentValue('CONTRACT_NAME');
+    this.config.stakingPoolId = await requestEnvironmentValue('ACCOUNT_ID');
+    this.config.stakePublicKey = await requestEnvironmentValue('VALIDATOR_PUBLIC_KEY');
+    this.config.networkId = await requestEnvironmentValue('CHAIN_ID');
+    this.config.nodeUrl = await requestEnvironmentValue('NODE_URL');
+    this.config.walletUrl = await requestEnvironmentValue('WALLET_URL');
+    this.config.contractHash = await requestEnvironmentValue('CONTRACT_HASH');
+    console.log(this.config.contractName)
+
+    this.state.stakingPoolId = this.config.stakingPoolId;
+    this.state.stakePublicKey = this.config.stakePublicKey;
 
     const nearConfig = {
-      networkId: process.env.REACT_APP_CHAIN_ID,
-      nodeUrl: process.env.REACT_APP_NODE_URL,
-      contractName: ContractName,
-      walletUrl: process.env.REACT_APP_WALLET_URL,
+      networkId: this.config.networkId,
+      nodeUrl: this.config.nodeUrl,
+      contractName: this.config.contractName,
+      walletUrl: this.config.walletUrl,
     };
     const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
     const near = await nearAPI.connect(Object.assign({ deps: { keyStore } }, nearConfig));
@@ -99,11 +117,11 @@ class App extends React.Component {
     this._nearConfig = nearConfig;
     this._near = near;
 
-    this._walletConnection = new nearAPI.WalletConnection(near, ContractName);
+    this._walletConnection = new nearAPI.WalletConnection(near, this.config.contractName);
     this._accountId = this._walletConnection.getAccountId();
 
     this._account = this._walletConnection.account();
-    this._contract = new nearAPI.Contract(this._account, ContractName, {
+    this._contract = new nearAPI.Contract(this._account, this.config.contractName, {
       viewMethods: ['get_min_attached_balance', 'get_number_of_staking_pools_created'],
       changeMethods: ['create_staking_pool'],
     });
@@ -135,7 +153,7 @@ class App extends React.Component {
       stateChange.stakingPoolAlreadyExists = false;
       if (this.isValidStakingPoolId(value)) {
         stateChange.stakingPoolAccountLoading = true;
-        this._near.connection.provider.query(`account/${value}.${ContractName}`, '').then((_a) => {
+        this._near.connection.provider.query(`account/${value}`, '').then((_a) => {
           if (this.state.stakingPoolId === value) {
             this.setState({
               stakingPoolAccountLoading: false,
@@ -162,7 +180,7 @@ class App extends React.Component {
   }
 
   isValidStakingPoolId(stakingPoolId) {
-    return stakingPoolId.match(ValidFactoryIdRe) && this.isValidAccountId(stakingPoolId + '.' + ContractName);
+    return stakingPoolId.match(ValidFactoryIdRe) && this.isValidAccountId(stakingPoolId);
   }
 
   stakingPoolIdClass() {
@@ -233,7 +251,7 @@ class App extends React.Component {
   async requestSignIn() {
     const appTitle = 'Token Factory';
     await this._walletConnection.requestSignIn(
-        ContractName,
+        this.config.contractName,
         appTitle
     )
   }
@@ -257,7 +275,7 @@ class App extends React.Component {
       owner_id: this.state.accountId,
       stake_public_key: this.state.stakePublicKey,
       reward_fee_fraction: this.state.rewardFeeFraction,
-      code_hash: process.env.REACT_APP_CONTRACT_HASH,
+      code_hash: this.config.contractHash,
     }, GAS, BigNumber(toYocto(this.state.attachedBalance)).toFixed())
   }
 
@@ -288,12 +306,12 @@ class App extends React.Component {
                      onChange={(e) => this.handleChange('stakingPoolId', e.target.value)}
               />
               <div className="input-group-append">
-                <div className="input-group-text">.{ContractName}</div>
+                <div className="input-group-text">{this.config.contractName}</div>
               </div>
             </div>
             <small>It'll be used to uniquely identify the staking pool and to create an Account ID for the staking pool.<br/>
               {this.isValidStakingPoolId(this.state.stakingPoolId) && (
-                <span>The staking pool account ID will be <strong>@{this.state.stakingPoolId}.{ContractName}</strong></span>
+                <span>The staking pool account ID will be <strong>@{this.state.stakingPoolId}</strong></span>
               )}
             </small>
 
@@ -395,7 +413,7 @@ class App extends React.Component {
                     !this.stakingPublicKeyValid() ||
                     !this.rewardFeeFractionValid()
                   }
-                  onClick={() => this.createStakingPool()}>Create Staking Pool {this.isValidStakingPoolId(this.state.stakingPoolId) && `@${this.state.stakingPoolId}.${ContractName}`} ({this.state.attachedBalance} Ⓝ)</button>
+                  onClick={() => this.createStakingPool()}>Create Staking Pool {this.isValidStakingPoolId(this.state.stakingPoolId) && `@${this.state.stakingPoolId}`} ({this.state.attachedBalance} Ⓝ)</button>
             </div>
           </div>
         </div>
@@ -408,7 +426,7 @@ class App extends React.Component {
     ));
     return (
         <div className="px-5">
-          <h1>Near staking-ui ({process.env.REACT_APP_CHAIN_ID})</h1>
+          <h1>Near staking-ui ({this.config.networkId})</h1>
           <p>
             Create and deploy a new staking pool. It'll cost you at least <span className="font-weight-bold">{fromYocto(this._minAttachedBalance)} Ⓝ</span> to cover storage fees on the new staking pool.
           </p>
@@ -427,7 +445,7 @@ class App extends React.Component {
               ) : (
                 <div className="alert alert-danger" role="alert">
                   Failed to create your staking pool. Take a look at the factory contract on explorer: <a
-                  rel="noopener noreferrer" target="_blank" href={`https://explorer.testnet.near.org/accounts/${ContractName}`}>@{ContractName}</a>
+                  rel="noopener noreferrer" target="_blank" href={`https://explorer.testnet.near.org/accounts/${this.config.contractName}`}>@{this.config.contractName}</a>
                 </div>
               )
             )
