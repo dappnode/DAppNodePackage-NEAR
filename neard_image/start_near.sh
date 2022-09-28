@@ -18,13 +18,13 @@ if [ ! -f ${NEAR_HOME}/data/CURRENT ]; then
     rm ${NEAR_HOME}/data.tar
 fi
 
-if [ -n "$ACCOUNT_ID" ] && [ -n "$VALIDATOR_PUBLIC_KEY" ] && [ -n "$VALIDATOR_SECRET_KEY" ]
-then
-    echo "Configure custom validator_key.json"
-    cat << EOF > "$NEAR_HOME/validator_key.json"
-{"account_id": "$FULL_ACCOUNT_ID", "public_key": "$VALIDATOR_PUBLIC_KEY", "secret_key": "$VALIDATOR_SECRET_KEY"}
-EOF
-fi
+# if [ -n "$ACCOUNT_ID" ] && [ -n "$VALIDATOR_PUBLIC_KEY" ] && [ -n "$VALIDATOR_SECRET_KEY" ]
+# then
+#     echo "Configure custom validator_key.json"
+#     cat << EOF > "$NEAR_HOME/validator_key.json"
+# {"account_id": "$FULL_ACCOUNT_ID", "public_key": "$VALIDATOR_PUBLIC_KEY", "secret_key": "$VALIDATOR_SECRET_KEY"}
+# EOF
+# fi
 
 ulimit -c unlimited
 

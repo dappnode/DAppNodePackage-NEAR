@@ -2,14 +2,7 @@ This package contains a Near Node and a local wallet.
 
 **Wallet URL**: [wallet.near.dappnode](http://wallet.near.dappnode)
 
-**Stake URL**: [near.dappnode](http://near.dappnode)
-
-The backup contains de following files:
-- config.json
-- node_key.json
-- validator_key.json
-
-When you already have the account id and the node and/or validator keys you can configure them on the Config tab. Take data from the files above.
+**Node URL**: [near.dappnode](http://near.dappnode:3030)
 
 ⚠️**Important**⚠️
 You will have to wait for your node to synchronize to connect the wallet to your node.
