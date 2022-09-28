@@ -100,7 +100,6 @@ class App extends React.Component {
     this.config.nodeUrl = await requestEnvironmentValue('NODE_URL');
     this.config.walletUrl = await requestEnvironmentValue('WALLET_URL');
     this.config.contractHash = await requestEnvironmentValue('CONTRACT_HASH');
-    console.log(this.config.contractName)
 
     this.state.stakingPoolId = this.config.stakingPoolId;
     this.state.stakePublicKey = this.config.stakePublicKey;
@@ -413,7 +412,7 @@ class App extends React.Component {
                     !this.stakingPublicKeyValid() ||
                     !this.rewardFeeFractionValid()
                   }
-                  onClick={() => this.createStakingPool()}>Create Staking Pool {this.isValidStakingPoolId(this.state.stakingPoolId) && `@${this.state.stakingPoolId}`} ({this.state.attachedBalance} Ⓝ)</button>
+                  onClick={() => this.createStakingPool()}>Create Staking Pool {this.isValidStakingPoolId(this.state.stakingPoolId) && `@${this.state.stakingPoolId}.${this.config.contractName}`} ({this.state.attachedBalance} Ⓝ)</button>
             </div>
           </div>
         </div>

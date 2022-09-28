@@ -2,13 +2,13 @@
 
 export NEAR_HOME=/srv/near
 SNAPSHOT_URL="https://near-protocol-public.s3.ca-central-1.amazonaws.com/backups/$CHAIN_ID/rpc/data.tar"
-
+FULL_ACCOUNT_ID="$ACCOUNT_ID$CONTRACT_NAME"
 NEARD_FLAGS=${NEAR_HOME:+--home="$NEAR_HOME"}
 mkdir -p $NEAR_HOME/data
 
 if [ ! -f ${NEAR_HOME}/node_key.json ]; then
     echo "Initializing node, this can take a while..."
-    cmd="neard $NEARD_FLAGS init ${CHAIN_ID:+--chain-id=$CHAIN_ID} ${ACCOUNT_ID:+--account-id=$ACCOUNT_ID} --download-genesis --download-config"
+    cmd="neard $NEARD_FLAGS init ${CHAIN_ID:+--chain-id=$CHAIN_ID} ${FULL_ACCOUNT_ID:+--account-id=$FULL_ACCOUNT_ID} --download-genesis --download-config"
     $cmd
 fi
 if [ ! -f ${NEAR_HOME}/data/CURRENT ]; then
@@ -22,7 +22,7 @@ if [ -n "$ACCOUNT_ID" ] && [ -n "$VALIDATOR_PUBLIC_KEY" ] && [ -n "$VALIDATOR_SE
 then
     echo "Configure custom validator_key.json"
     cat << EOF > "$NEAR_HOME/validator_key.json"
-{"account_id": "$ACCOUNT_ID", "public_key": "$VALIDATOR_PUBLIC_KEY", "secret_key": "$VALIDATOR_SECRET_KEY"}
+{"account_id": "$FULL_ACCOUNT_ID", "public_key": "$VALIDATOR_PUBLIC_KEY", "secret_key": "$VALIDATOR_SECRET_KEY"}
 EOF
 fi
 
