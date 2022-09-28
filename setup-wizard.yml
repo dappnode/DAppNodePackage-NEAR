@@ -9,7 +9,7 @@ fields:
     description: >-
       The Account ID will be added to validator_key.json
     required: true
-    pattern: "^([a-z\\d]+[-_.])*[a-z\\d]+$"
+    pattern: "^([a-z\\d]+[-_])*[a-z\\d]+$"
     patternErrorMessage: Lowercase id
   - id: validatorPublicKey
     target:
