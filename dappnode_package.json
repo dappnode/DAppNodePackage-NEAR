@@ -1,17 +1,48 @@
 {
   "name": "near.dnp.dappnode.eth",
-  "version": "0.1.0",
-  "description": "near.public.dappnode.eth description",
+  "version": "0.1.3",
+  "upstreamVersion": "1.29.0",
+  "upstreamRepo": "near/nearcore",
+  "upstreamArg": "UPSTREAM_VERSION",
+  "shortDescription": "Reimagine your world.",
+  "description": "Through simple, secure, and scalable technology, NEAR empowers millions to invent and explore new experiences. Business, creativity, and community are being reimagined for a more sustainable and inclusive future.",
   "type": "service",
-  "author": "edu",
+  "mainService": "near",
+  "author": "eduadiez <eduadiez@gmail.com> (https://github.com/eduadiez)",
+  "contributors": [
+    "mgarciate <mgarciate@gmail.com> (https://github.com/mgarciate)"
+  ],
   "categories": [
+    "Blockchain",
     "Developer tools"
   ],
+  "architectures": ["linux/amd64"],
   "links": {
-    "homepage": "https://your-project-homepage-or-docs.io"
+    "homepage": "https://near.org",
+    "api": "http://near.dappnode:3030",
+    "Wallet": "http://wallet.near.dappnode"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dappnode/DAppNodePackage-NEAR.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dappnode/DAppNodePackage-NEAR/issues"
   },
   "globalEnvs": {
     "all": true
   },
+  "backup": [
+    {
+      "name": "config",
+      "path": "/srv/near/config.json",
+      "service": "near"
+    },
+    {
+      "name": "validator_key",
+      "path": "/srv/near/validator_key.json",
+      "service": "near"
+    }
+  ],
   "license": "GPL-3.0"
 }

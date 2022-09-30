@@ -1,0 +1,10 @@
+[
+    {
+      "labels": {
+        "package": "near.dnp.dappnode.eth",
+        "service": "near.near.dappnode",
+        "app": "near"
+      },
+      "targets": ["near.near.dappnode:3030"]
+    }
+  ]

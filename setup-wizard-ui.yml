@@ -1,0 +1,31 @@
+version: "2"
+fields:
+  - id: accountId
+    target:
+      type: environment
+      name: ACCOUNT_ID
+      service: near
+    title: Account ID
+    description: >-
+      The Account ID will be added to validator_key.json
+    required: true
+    pattern: "^([a-z\\d]+[-_])*[a-z\\d]+$"
+    patternErrorMessage: Lowercase id
+  - id: validatorPublicKey
+    target:
+      type: environment
+      name: VALIDATOR_PUBLIC_KEY
+      service: near
+    title: Validator Public Key
+    description: >-
+      The Validator Public Key will be added to validator_key.json
+    required: true
+  - id: validatorSecretKey
+    target:
+      type: environment
+      name: VALIDATOR_SECRET_KEY
+      service: near
+    title: Validator Secret Key
+    description: >-
+      The Validator Secret Key will be added to validator_key.json
+    required: true
