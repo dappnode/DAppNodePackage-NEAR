@@ -6,8 +6,6 @@ services:
       context: neard_image
       args:
         UPSTREAM_VERSION: 1.29.0
-    environment:
-      CHAIN_ID: testnet
     volumes:
       - "near:/srv/near"
     restart: unless-stopped
@@ -19,7 +17,6 @@ services:
     build:
       context: wallet
       args:
-        CHAIN_ID: testnet
         NODE_URL: "http://near.dappnode:3030"
     restart: unless-stopped
 volumes:
