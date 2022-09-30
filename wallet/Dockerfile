@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile-upstream:experimental
 
 FROM phusion/baseimage:0.11 as build
-ARG CHAIN_ID
+
 ARG NODE_URL
 ENV NEAR_WALLET_ENV=mainnet
 ENV REACT_APP_NODE_URL=${NODE_URL}
