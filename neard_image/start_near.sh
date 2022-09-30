@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export NEAR_HOME=/srv/near
-CHAIN_ID=mainet
+CHAIN_ID=mainnet
 SNAPSHOT_URL="https://near-protocol-public.s3.ca-central-1.amazonaws.com/backups/$CHAIN_ID/rpc/data.tar"
 FULL_ACCOUNT_ID="$ACCOUNT_ID.$CONTRACT_NAME"
 NEARD_FLAGS=${NEAR_HOME:+--home="$NEAR_HOME"}
