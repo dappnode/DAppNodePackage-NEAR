@@ -96,7 +96,7 @@ class App extends React.Component {
     this.config.contractName = await requestEnvironmentValue('CONTRACT_NAME');
     this.config.stakingPoolId = await requestEnvironmentValue('ACCOUNT_ID');
     this.config.stakePublicKey = await requestEnvironmentValue('VALIDATOR_PUBLIC_KEY');
-    this.config.networkId = await requestEnvironmentValue('CHAIN_ID');
+    this.config.networkId = "mainnet";
     this.config.nodeUrl = await requestEnvironmentValue('NODE_URL');
     this.config.walletUrl = await requestEnvironmentValue('WALLET_URL');
     this.config.contractHash = await requestEnvironmentValue('CONTRACT_HASH');
