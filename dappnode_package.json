@@ -29,9 +29,6 @@
   "bugs": {
     "url": "https://github.com/dappnode/DAppNodePackage-NEAR/issues"
   },
-  "globalEnvs": {
-    "all": true
-  },
   "backup": [
     {
       "name": "config",
