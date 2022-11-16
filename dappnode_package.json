@@ -1,7 +1,7 @@
 {
   "name": "near.dnp.dappnode.eth",
   "version": "0.1.0",
-  "upstreamVersion": "1.29.0",
+  "upstreamVersion": "1.29.1",
   "upstreamRepo": "near/nearcore",
   "upstreamArg": "UPSTREAM_VERSION",
   "shortDescription": "Reimagine your world.",
@@ -12,10 +12,7 @@
   "contributors": [
     "mgarciate <mgarciate@gmail.com> (https://github.com/mgarciate)"
   ],
-  "categories": [
-    "Blockchain",
-    "Developer tools"
-  ],
+  "categories": ["Blockchain", "Developer tools"],
   "architectures": ["linux/amd64"],
   "links": {
     "homepage": "https://near.org",
