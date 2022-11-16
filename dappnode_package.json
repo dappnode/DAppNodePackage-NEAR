@@ -1,6 +1,6 @@
 {
   "name": "near.dnp.dappnode.eth",
-  "version": "0.1.3",
+  "version": "0.1.0",
   "upstreamVersion": "1.29.0",
   "upstreamRepo": "near/nearcore",
   "upstreamArg": "UPSTREAM_VERSION",
