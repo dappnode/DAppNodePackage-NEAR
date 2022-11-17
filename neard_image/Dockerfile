@@ -13,7 +13,7 @@ RUN yarn add express cors shelljs
 # ======================== BUILD NEAR ==================================
 FROM nearprotocol/nearcore:${UPSTREAM_VERSION}
 
-RUN apt update && apt install -y axel wget nginx supervisor
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true apt-get install -y nginx supervisor wget awscli
 
 COPY start_near.sh /usr/local/bin/
 # COPY start_api.sh /usr/local/bin/
