@@ -2,7 +2,7 @@
 
 export NEAR_HOME=/srv/near
 CHAIN_ID=mainnet
-SNAPSHOT_URL="https://near-protocol-public.s3.ca-central-1.amazonaws.com/backups/$CHAIN_ID/rpc/data.tar"
+SNAPSHOT_URL="s3://near-protocol-public/backups/$CHAIN_ID/rpc"
 FULL_ACCOUNT_ID="$ACCOUNT_ID.$CONTRACT_NAME"
 NEARD_FLAGS=${NEAR_HOME:+--home="$NEAR_HOME"}
 mkdir -p $NEAR_HOME/data
@@ -14,9 +14,9 @@ if [ ! -f ${NEAR_HOME}/node_key.json ]; then
 fi
 if [ ! -f ${NEAR_HOME}/data/CURRENT ]; then
     echo "Downloading a snapshot, this can take a while..."
-    axel $SNAPSHOT_URL -o ${NEAR_HOME}
-    tar -xvf ${NEAR_HOME}/data.tar -C ${NEAR_HOME}/data
-    rm ${NEAR_HOME}/data.tar
+    aws s3 --no-sign-request cp $SNAPSHOT_URL/latest .
+    LATEST=$(cat latest)
+    aws s3 --no-sign-request cp --no-sign-request --recursive $SNAPSHOT_URL/$LATEST ${NEAR_HOME}/data
 fi
 
 # if [ -n "$ACCOUNT_ID" ] && [ -n "$VALIDATOR_PUBLIC_KEY" ] && [ -n "$VALIDATOR_SECRET_KEY" ]
