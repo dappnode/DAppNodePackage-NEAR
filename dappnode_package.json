@@ -10,7 +10,8 @@
   "mainService": "near",
   "author": "eduadiez <eduadiez@gmail.com> (https://github.com/eduadiez)",
   "contributors": [
-    "mgarciate <mgarciate@gmail.com> (https://github.com/mgarciate)"
+    "mgarciate <mgarciate@gmail.com> (https://github.com/mgarciate)",
+    "Voss <voss@visnovalabs.io> (https://github.com/alexpeterson91)"
   ],
   "categories": ["Blockchain", "Developer tools"],
   "architectures": ["linux/amd64"],
