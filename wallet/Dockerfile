@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile-upstream:experimental
 
-FROM phusion/baseimage:0.11 as build
+FROM phusion/baseimage:jammy-1.0.1 as build
 
 ARG NODE_URL
 ENV NEAR_WALLET_ENV=mainnet
