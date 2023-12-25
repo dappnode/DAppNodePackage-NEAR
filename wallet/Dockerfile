@@ -33,7 +33,7 @@ RUN yarn install
 RUN NEAR_WALLET_ENV=mainnet REACT_APP_NODE_URL=${NODE_URL} yarn run build
 
 # ======================== EXECUTE ==================================
-FROM nginx:1.22.0-alpine
+FROM nginx:1.25.3-alpine
 COPY --from=build /near-wallet/packages/frontend/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
