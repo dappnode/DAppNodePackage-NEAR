@@ -1,7 +1,7 @@
 {
   "name": "near.dnp.dappnode.eth",
   "version": "0.1.5",
-  "upstreamVersion": "1.37.1",
+  "upstreamVersion": "1.38.0",
   "upstreamRepo": "near/nearcore",
   "upstreamArg": "UPSTREAM_VERSION",
   "shortDescription": "Reimagine your world.",
