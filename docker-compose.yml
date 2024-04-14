@@ -1,23 +1,23 @@
 version: "3.5"
 services:
   near:
-    image: "near.near.dnp.dappnode.eth:0.1.0"
+    image: near.near.dnp.dappnode.eth:0.1.0
     build:
       context: neard_image
       args:
-        UPSTREAM_VERSION: 1.38.2
+        UPSTREAM_VERSION: 1.39.0
     volumes:
-      - "near:/srv/near"
+      - near:/srv/near
     restart: unless-stopped
     ports:
-      - "24567:24567/tcp"
-      - "24567:24567/udp"
+      - 24567:24567/tcp
+      - 24567:24567/udp
   wallet:
-    image: "wallet.near.dnp.dappnode.eth:0.1.0"
+    image: wallet.near.dnp.dappnode.eth:0.1.0
     build:
       context: wallet
       args:
-        NODE_URL: "http://near.dappnode:3030"
+        NODE_URL: http://near.dappnode:3030
     restart: unless-stopped
 volumes:
   near: {}
