@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/jest-dom": "^6.1.6",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.2",
     "bignumber.js": "^9.1.0",
-    "bn.js": "^5.1.1",
-    "near-api-js": "^0.45.1",
-    "react": "^18.1.0",
-    "react-bootstrap": "^1.0.0",
-    "react-dom": "^18.1.0",
-    "react-scripts": "3.4.0",
+    "bn.js": "^5.2.1",
+    "near-api-js": "^3.0.1",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.9.2",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
     "shelljs": "^0.8.5"
   },
   "scripts": {
@@ -38,6 +38,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^2.2.0"
+    "gh-pages": "^6.1.1"
   }
 }
