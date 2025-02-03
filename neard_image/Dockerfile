@@ -13,7 +13,8 @@ RUN yarn add express cors shelljs
 # ======================== BUILD NEAR ==================================
 FROM nearprotocol/nearcore:${UPSTREAM_VERSION}
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true apt-get install -y nginx supervisor wget awscli
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true apt-get install -y nginx supervisor curl unzip jq
+RUN curl https://rclone.org/install.sh | bash
 
 COPY start_near.sh /usr/local/bin/
 # COPY start_api.sh /usr/local/bin/
