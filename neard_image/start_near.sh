@@ -30,18 +30,4 @@ ulimit -c unlimited
 echo "Telemetry: ${TELEMETRY_URL}"
 echo "Bootnodes: ${BOOT_NODES}"
 
-
-LATEST_PEERS=$(curl -X POST https://rpc.${CHAIN_ID}.near.org \  -H "Content-Type: application/json" \
-  -d '{
-        "jsonrpc": "2.0",
-        "method": "network_info",
-        "params": [],
-        "id": "dontcare"
-      }' | \
-jq '.result.active_peers as $list1 | .result.known_producers as $list2 |
-$list1[] as $active_peer | $list2[] |
-select(.peer_id == $active_peer.id) |
-"\(.peer_id)@\($active_peer.addr)"' |\
-awk 'NR>2 {print ","} length($0) {print p} {p=$0}' ORS="" | sed 's/"//g')
-
-exec neard "$NEARD_FLAGS" run ${TELEMETRY_URL:+--telemetry-url="$TELEMETRY_URL"}  --boot-nodes $LATEST_PEERS "$@"
+exec neard "$NEARD_FLAGS" run ${TELEMETRY_URL:+--telemetry-url="$TELEMETRY_URL"} ${BOOT_NODES:+--boot-nodes="$BOOT_NODES"} "$@"
