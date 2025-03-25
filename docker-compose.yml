@@ -19,12 +19,5 @@ services:
       - VALIDATOR_PUBLIC_KEY
       - VALIDATOR_SECRET_KEY
       - DOWNLOAD_SNAPSHOT=true
-#  wallet:
-#    image: wallet.near.dnp.dappnode.eth:0.1.0
-#    build:
-#      context: wallet
-#      args:
-#        NODE_URL: http://near.dappnode:3030
-#    restart: unless-stopped
 volumes:
   near: {}
