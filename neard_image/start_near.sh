@@ -22,6 +22,12 @@ then
     cat << EOF > "$NEAR_HOME/validator_key.json"
 {"account_id": "$FULL_ACCOUNT_ID", "public_key": "$VALIDATOR_PUBLIC_KEY", "secret_key": "$VALIDATOR_SECRET_KEY"}
 EOF
+else
+    # Ensure validator_key.json doesn't exist if variables are not provided
+    if [ -f "$NEAR_HOME/validator_key.json" ]; then
+        echo "Removing existing validator_key.json as required variables are not set"
+        rm "$NEAR_HOME/validator_key.json"
+    fi
 fi
 
 ulimit -c unlimited
