@@ -8,7 +8,7 @@ mkdir -p $NEAR_HOME/data
 
 if [ ! -f ${NEAR_HOME}/node_key.json ]; then
     echo "Initializing node, this can take a while..."
-    cmd="neard $NEARD_FLAGS init --chain-id=${CHAIN_ID} ${FULL_ACCOUNT_ID:+--account-id=$FULL_ACCOUNT_ID} --download-genesis --download-config"
+    cmd="neard $NEARD_FLAGS init --chain-id=${CHAIN_ID} ${FULL_ACCOUNT_ID:+--account-id=$FULL_ACCOUNT_ID} --download-genesis --download-config $CONFIG_TYPE"
     $cmd
 fi
 if [ "$DOWNLOAD_SNAPSHOT" = "true" ] && [ ! -f "${NEAR_HOME}/data/CURRENT" ]; then
@@ -28,6 +28,22 @@ else
         echo "Removing existing validator_key.json as required variables are not set"
         rm "$NEAR_HOME/validator_key.json"
     fi
+fi
+
+
+if [ "$FETCH_BOOT_NODES" = "true" ]; then
+BOOT_NODES=$(curl -X POST https://rpc.${CHAIN_ID}.near.org \  -H "Content-Type: application/json" \
+  -d '{
+        "jsonrpc": "2.0",
+        "method": "network_info",
+        "params": [],
+        "id": "dontcare"
+      }' | \
+jq '.result.active_peers as $list1 | .result.known_producers as $list2 |
+$list1[] as $active_peer | $list2[] |
+select(.peer_id == $active_peer.id) |
+"\(.peer_id)@\($active_peer.addr)"' |\
+awk 'NR>2 {print ","} length($0) {print p} {p=$0}' ORS="" | sed 's/"//g')
 fi
 
 ulimit -c unlimited

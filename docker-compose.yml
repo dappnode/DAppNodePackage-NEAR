@@ -19,6 +19,8 @@ services:
       - VALIDATOR_PUBLIC_KEY
       - VALIDATOR_SECRET_KEY
       - DOWNLOAD_SNAPSHOT=true
+      - FETCH_BOOT_NODES
+      - CONFIG_TYPE
 #  wallet:
 #    image: wallet.near.dnp.dappnode.eth:0.1.0
 #    build:
