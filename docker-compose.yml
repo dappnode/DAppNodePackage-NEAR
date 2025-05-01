@@ -5,7 +5,7 @@ services:
     build:
       context: neard_image
       args:
-        UPSTREAM_VERSION: 2.5.2
+        UPSTREAM_VERSION: 2.6.1
     volumes:
       - near:/srv/near
     restart: unless-stopped
@@ -21,12 +21,5 @@ services:
       - DOWNLOAD_SNAPSHOT=true
       - FETCH_BOOT_NODES
       - CONFIG_TYPE
-#  wallet:
-#    image: wallet.near.dnp.dappnode.eth:0.1.0
-#    build:
-#      context: wallet
-#      args:
-#        NODE_URL: http://near.dappnode:3030
-#    restart: unless-stopped
 volumes:
   near: {}
