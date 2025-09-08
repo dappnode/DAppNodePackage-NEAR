@@ -37,6 +37,11 @@
       "name": "validator_key",
       "path": "/srv/near/validator_key.json",
       "service": "near"
+    },
+    {
+      "name": "pings",
+      "path": "/srv/near/latencieslogs.csv",
+      "service": "near"
     }
   ],
   "license": "GPL-3.0"
