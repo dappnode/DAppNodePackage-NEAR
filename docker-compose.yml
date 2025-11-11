@@ -5,7 +5,7 @@ services:
     build:
       context: neard_image
       args:
-        UPSTREAM_VERSION: 2.9.0
+        UPSTREAM_VERSION: 70a87be
     volumes:
       - near:/srv/near
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
       - 24567:24567/udp
     environment:
       - CHAIN_ID=mainnet
-      - STAKING_CONTRACT_NAME=poolv1.near
+      - STAKING_CONTRACT_NAME=pool.near
       - ACCOUNT_ID
       - VALIDATOR_PUBLIC_KEY
       - VALIDATOR_SECRET_KEY
