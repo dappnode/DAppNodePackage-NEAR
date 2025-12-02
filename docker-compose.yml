@@ -5,7 +5,7 @@ services:
     build:
       context: neard_image
       args:
-        UPSTREAM_VERSION: 2.9.1-patch
+        UPSTREAM_VERSION: 2.10.0
     volumes:
       - near:/srv/near
     restart: unless-stopped
