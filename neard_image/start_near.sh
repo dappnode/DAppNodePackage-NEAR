@@ -30,9 +30,9 @@ else
     fi
 fi
 
-
 if [ "$FETCH_BOOT_NODES" = "true" ]; then
-BOOT_NODES=$(curl -X POST https://rpc.${CHAIN_ID}.near.org \  -H "Content-Type: application/json" \
+BOOT_NODES=$(curl -X POST https://rpc.${CHAIN_ID}.near.org \
+  -H "Content-Type: application/json" \
   -d '{
         "jsonrpc": "2.0",
         "method": "network_info",
@@ -52,6 +52,6 @@ ulimit -c unlimited
 echo "Telemetry: ${TELEMETRY_URL}"
 echo "Bootnodes: ${BOOT_NODES}"
 
-exec timeout -s SIGINT 900 neard ping --chain-id ${CHAIN_ID} --peer ed25519:E53qRwScBwN3WH9Pc5rVyZxDVHt3KcF9fMD1q6YjMtNQ@144.76.111.43:24567 --protocol-version 76 --latencies-csv-file $NEAR_HOME/latencieslogs.csv &
+timeout -s SIGINT 900 neard ping --chain-id ${CHAIN_ID} --peer ed25519:E53qRwScBwN3WH9Pc5rVyZxDVHt3KcF9fMD1q6YjMtNQ@144.76.111.43:24567 --protocol-version 82 --latencies-csv-file $NEAR_HOME/latencieslogs.csv &
 
 exec neard "$NEARD_FLAGS" run ${TELEMETRY_URL:+--telemetry-url="$TELEMETRY_URL"} ${BOOT_NODES:+--boot-nodes="$BOOT_NODES"} "$@"
