@@ -30,9 +30,9 @@ else
     fi
 fi
 
-
 if [ "$FETCH_BOOT_NODES" = "true" ]; then
-BOOT_NODES=$(curl -X POST https://rpc.${CHAIN_ID}.near.org \  -H "Content-Type: application/json" \
+BOOT_NODES=$(curl -X POST https://rpc.${CHAIN_ID}.near.org \
+  -H "Content-Type: application/json" \
   -d '{
         "jsonrpc": "2.0",
         "method": "network_info",
@@ -52,6 +52,17 @@ ulimit -c unlimited
 echo "Telemetry: ${TELEMETRY_URL}"
 echo "Bootnodes: ${BOOT_NODES}"
 
-exec timeout -s SIGINT 900 neard ping --chain-id ${CHAIN_ID} --peer ed25519:E53qRwScBwN3WH9Pc5rVyZxDVHt3KcF9fMD1q6YjMtNQ@144.76.111.43:24567 --protocol-version 82 --latencies-csv-file $NEAR_HOME/latencieslogs.csv &
+# ============ CHANGE 1: Move ping command to background WITHOUT exec ============
+# REASON: The first "exec" was replacing the shell process, preventing the main
+#         "neard run" command from ever executing. By removing "exec" here,
+#         the ping command runs in the background and doesn't block the main node.
+# CHANGE: Removed "exec" before "timeout", added "&" to run in background only
+timeout -s SIGINT 900 neard ping --chain-id ${CHAIN_ID} --peer ed25519:E53qRwScBwN3WH9Pc5rVyZxDVHt3KcF9fMD1q6YjMtNQ@144.76.111.43:24567 --protocol-version 82 --latencies-csv-file $NEAR_HOME/latencieslogs.csv &
 
+# ============ CHANGE 2: Keep "exec" only on the FINAL command ============
+# REASON: "exec" should only be used on the LAST command in the script.
+#         It replaces the shell process with the neard process, making it the
+#         main PID that Docker monitors. This ensures Docker doesn't exit
+#         when the ping diagnostic finishes.
+# CHANGE: Kept "exec" here - this is correct and necessary
 exec neard "$NEARD_FLAGS" run ${TELEMETRY_URL:+--telemetry-url="$TELEMETRY_URL"} ${BOOT_NODES:+--boot-nodes="$BOOT_NODES"} "$@"
