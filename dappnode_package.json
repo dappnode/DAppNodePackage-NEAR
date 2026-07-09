@@ -1,32 +1,8 @@
 {
-  "name": "near.dnp.dappnode.eth",
-  "version": "0.1.17",
-  "upstreamVersion": "2.12.0",
-  "upstreamRepo": "near/nearcore",
-  "upstreamArg": "UPSTREAM_VERSION",
-  "shortDescription": "Reimagine your world.",
-  "description": "Through simple, secure, and scalable technology, NEAR empowers millions to invent and explore new experiences. Business, creativity, and community are being reimagined for a more sustainable and inclusive future.",
-  "type": "service",
-  "mainService": "near",
-  "author": "eduadiez <eduadiez@gmail.com> (https://github.com/eduadiez)",
-  "contributors": [
-    "mgarciate <mgarciate@gmail.com> (https://github.com/mgarciate)",
-    "Voss <voss@visnovalabs.io> (https://github.com/alexpeterson91)"
+  "architectures": [
+    "linux/amd64"
   ],
-  "categories": ["Blockchain", "Developer tools"],
-  "architectures": ["linux/amd64"],
-  "links": {
-    "homepage": "https://near.org",
-    "api": "http://near.dappnode:3030",
-    "Wallet": "http://wallet.near.dappnode"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dappnode/DAppNodePackage-NEAR.git"
-  },
-  "bugs": {
-    "url": "https://github.com/dappnode/DAppNodePackage-NEAR/issues"
-  },
+  "author": "eduadiez <eduadiez@gmail.com> (https://github.com/eduadiez)",
   "backup": [
     {
       "name": "config",
@@ -44,5 +20,34 @@
       "service": "near"
     }
   ],
-  "license": "GPL-3.0"
+  "bugs": {
+    "url": "https://github.com/dappnode/DAppNodePackage-NEAR/issues"
+  },
+  "categories": [
+    "Blockchain",
+    "Developer tools"
+  ],
+  "contributors": [
+    "mgarciate <mgarciate@gmail.com> (https://github.com/mgarciate)",
+    "Voss <voss@visnovalabs.io> (https://github.com/alexpeterson91)"
+  ],
+  "description": "Through simple, secure, and scalable technology, NEAR empowers millions to invent and explore new experiences. Business, creativity, and community are being reimagined for a more sustainable and inclusive future.",
+  "license": "GPL-3.0",
+  "links": {
+    "Wallet": "http://wallet.near.dappnode",
+    "api": "http://near.dappnode:3030",
+    "homepage": "https://near.org"
+  },
+  "mainService": "near",
+  "name": "near.dnp.dappnode.eth",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dappnode/DAppNodePackage-NEAR.git"
+  },
+  "shortDescription": "Reimagine your world.",
+  "type": "service",
+  "upstreamArg": "UPSTREAM_VERSION",
+  "upstreamRepo": "near/nearcore",
+  "upstreamVersion": "2.13.0",
+  "version": "0.1.18"
 }
