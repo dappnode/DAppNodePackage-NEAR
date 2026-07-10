@@ -31,6 +31,12 @@ else
 fi
 
 
+if [ -f "$NEAR_HOME/config.json" ]; then
+    echo "Removing state_sync.sync block from config.json"
+    jq 'del(.state_sync.sync)' "$NEAR_HOME/config.json" > "$NEAR_HOME/config.json.tmp" \
+        && mv "$NEAR_HOME/config.json.tmp" "$NEAR_HOME/config.json"
+fi
+
 if [ "$FETCH_BOOT_NODES" = "true" ]; then
 BOOT_NODES=$(curl -X POST https://rpc.${CHAIN_ID}.near.org \  -H "Content-Type: application/json" \
   -d '{
