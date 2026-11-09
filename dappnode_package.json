@@ -46,8 +46,12 @@
   },
   "shortDescription": "Reimagine your world.",
   "type": "service",
-  "upstreamArg": "UPSTREAM_VERSION",
-  "upstreamRepo": "near/nearcore",
-  "upstreamVersion": "2.14.0",
+  "upstream": [
+    {
+      "repo": "near/nearcore",
+      "version": "2.14.0",
+      "arg": "UPSTREAM_VERSION"
+    }
+  ],
   "version": "0.1.22"
 }
